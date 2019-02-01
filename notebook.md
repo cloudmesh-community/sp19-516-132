@@ -6,9 +6,8 @@
 # Week 01/21/2019-01/27/2019
 
 * Read chapter 1-4 in Cloud Computing book.
-* Contributions: Made below changes
-  https://github.com/cloudmesh-community/book/pull/297/files/e4d8e231d563f218b86be70aff6ea31ce9a684ee 
-  https://github.com/cloudmesh-community/book/pull/296/files/e676fb0f9de39f298dc0db4e4cbd6e29c77469b5
+* Contributions: https://github.com/cloudmesh-community/book/pull/297/files/e4d8e231d563f218b86be70aff6ea31ce9a684ee 
+* Contributions: https://github.com/cloudmesh-community/book/pull/296/files/e676fb0f9de39f298dc0db4e4cbd6e29c77469b5
 * Office Hours: Attended Office Hours with TA
 
 # Week 01/14/2019-01/20/2019
