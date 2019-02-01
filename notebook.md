@@ -3,6 +3,7 @@
 * Videos: Watched REST.
 * Office Hours: Attended Thursday Office Hours discussing REST.
 * Contributions: Updated Datacenters.md
+* Read chapter 5-7 in Cloud Computing book.
 
 # Week 01/21/2019-01/27/2019
 
