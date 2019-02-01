@@ -2,7 +2,7 @@
 
 * Videos: Watched REST.
 * Office Hours: Attended Thursday Office Hours discussing REST.
-* Contributions: Updated Datacenters.md
+* Contributions: Updated Datacenters.md https://github.com/cloudmesh-community/book/commit/9b2f8f16bacb1ab11ad25491e26f24edead582e2
 * Read chapter 5-7 in Cloud Computing book.
 
 # Week 01/21/2019-01/27/2019
