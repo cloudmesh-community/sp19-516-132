@@ -1,3 +1,19 @@
+# Week 02/19/2019-03/07/2019
+* Chapter: https://github.com/cloudmesh-community/book/issues/333
+* Pull Request: https://github.com/cloudmesh-community/cm/pull/126
+* Pull Request: https://github.com/cloudmesh-community/cm/pull/125
+* Pull Request: https://github.com/cloudmesh-community/cm/pull/124
+* Pull Request: https://github.com/cloudmesh-community/cm/pull/122
+* Pull Request: https://github.com/cloudmesh-community/cm/pull/121
+* Pull Request: https://github.com/cloudmesh-community/cm/pull/120
+
+
+# Week 02/04/2019-02/18/2019
+* Section: https://github.com/cloudmesh-community/book/issues/337
+* Pull Requests: https://github.com/cloudmesh-community/cm/pull/113
+* Pull Requests: https://github.com/cloudmesh-community/cm/pull/114
+* Pull Requests: https://github.com/cloudmesh-community/cm/pull/115
+
 # Week 01/28/2019-02/03/2019
 
 * Videos: Watched REST.
