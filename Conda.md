@@ -1,8 +1,22 @@
 # Creating Conda packages for cloudmesh
 
-* Step 1 - Download anaconda latest version by running command - curl -O https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
-* Step 2 - Checksum - sha256sum Anaconda3-5.0.1-Linux-x86_64.sh
-* Step 3 - Create an account in anaconda.org
+* Step 1 - Download anaconda latest version by running command - 
+  
+  ```
+  mkdir condavm
+  cd condavm
+  vagrant init ....
+  vagrant up
+  vagarnt ssh
+  
+  # curl -O https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
+  #sh Anaconda3-2018.12-Linux-x86_64.sh -b
+  
+  wget https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
+  
+  sh Anaconda3-5.0.1-Linux-x86_64.sh -b
+  ```
+
 * Step 4 - run  - conda config --set anaconda_upload yes
 * Step 5 - Clone the 
 * Step 6 - conda build cloudmesh.common (This will build and upload cloudmesh.common)
