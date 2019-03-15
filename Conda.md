@@ -9,6 +9,7 @@
   vagrant up
   vagarnt ssh
   
+  sudo apt-get update
   # wget https://repo.anaconda.com/archive/Anaconda3-2018.12-Linux-x86_64.sh
 
   # curl -O https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
