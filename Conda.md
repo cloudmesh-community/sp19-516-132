@@ -23,6 +23,8 @@
   
   export PATH="/usr/local/anaconda3/bin:$PATH"
   conda config --set anaconda_upload yes
+  conda config --env --add channels conda-forge
+  
   export SRC=`pwd`
   git clone https://github.com/cloudmesh/cloudmesh.common.git
   git clone https://github.com/cloudmesh/cloudmesh.cmd5.git
