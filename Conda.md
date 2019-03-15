@@ -1,5 +1,8 @@
 # Creating Conda packages for cloudmesh
 
+BUG install this in non sudo
+
+
 * Step 1 - Download anaconda latest version by running command - 
   
   ```
@@ -45,7 +48,6 @@
 * Install the packages
 
   ```
-  conda install -y -c laszewski cloudmesh.common
-  conda install -y -c laszewski cloudmesh.cmd5
-  conda install -y -c laszewski cloudmesh.sys
+  sudo conda install -y -c laszewski cloudmesh.cmd5
+  sudo conda install -y -c laszewski cloudmesh.sys
   ```
