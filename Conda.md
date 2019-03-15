@@ -45,7 +45,7 @@
 * Install the packages
 
   ```
-  conda install -c laszewski cloudmesh.common
-  conda install -c laszewski cloudmesh.cmd5
-  conda install -c laszewski cloudmesh.sys
+  conda install -y -c laszewski cloudmesh.common
+  conda install -y -c laszewski cloudmesh.cmd5
+  conda install -y -c laszewski cloudmesh.sys
   ```
