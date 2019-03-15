@@ -22,17 +22,7 @@
   sudo sh Anaconda3-2018.12-Linux-x86_64.sh -b -u -p /usr/local
   
   export PATH="/usr/local/anaconda3/bin:$PATH"
-  ```
-
-* Step 4 - run  - 
-
-  ```
   conda config --set anaconda_upload yes
-  ```
-  
-* Step 5 - Clone the 
-
-  ```
   export SRC=`pwd`
   git clone https://github.com/cloudmesh/cloudmesh.common.git
   git clone https://github.com/cloudmesh/cloudmesh.cmd5.git
