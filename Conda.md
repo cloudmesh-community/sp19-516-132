@@ -32,6 +32,11 @@
   ```
   
 * Step 6 - conda build cloudmesh.common (This will build and upload cloudmesh.common)
+
+  ```
+  cd $SRC/cm/conda/cloudmesh.common
+  conda build cloudmesh.common
+  ```
 * Step 7 - When prompted, Enter credentials to the anaconda.org
 * Step 8 - Run - conda build cloudmesh.sys (This will build and upload cloudmesh.sys)
 * Step 9 - Run - conda build cloudmesh.cmd5 (This will build and upload cloudmesh.cmd5)
