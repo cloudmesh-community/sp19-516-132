@@ -24,7 +24,12 @@
   export PATH="/usr/local/anaconda3/bin:$PATH"
   ```
 
-* Step 4 - run  - conda config --set anaconda_upload yes
+* Step 4 - run  - 
+
+  ```
+  conda config --set anaconda_upload yes
+  ```
+  
 * Step 5 - Clone the 
 * Step 6 - conda build cloudmesh.common (This will build and upload cloudmesh.common)
 * Step 7 - When prompted, Enter credentials to the anaconda.org
