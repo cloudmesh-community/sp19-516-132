@@ -31,6 +31,16 @@
   ```
   
 * Step 5 - Clone the 
+
+  ```
+  export SRC=`pwd`
+  git clone https://github.com/cloudmesh/cloudmesh.common.git
+  git clone https://github.com/cloudmesh/cloudmesh.cmd5.git
+  git clone https://github.com/cloudmesh/cloudmesh.sys.git
+  git clone https://github.com/cloudmesh/cloudmesh.openapi.git
+  git clone https://github.com/cloudmesh-community/cm.git
+  ```
+  
 * Step 6 - conda build cloudmesh.common (This will build and upload cloudmesh.common)
 * Step 7 - When prompted, Enter credentials to the anaconda.org
 * Step 8 - Run - conda build cloudmesh.sys (This will build and upload cloudmesh.sys)
