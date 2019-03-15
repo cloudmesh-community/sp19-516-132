@@ -5,10 +5,12 @@
   ```
   mkdir condavm
   cd condavm
-  vagrant init ....
+  vagrant init generic/ubuntu1810
   vagrant up
   vagarnt ssh
   
+  # wget https://repo.anaconda.com/archive/Anaconda3-2018.12-Linux-x86_64.sh
+
   # curl -O https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
   #sh Anaconda3-2018.12-Linux-x86_64.sh -b
   
