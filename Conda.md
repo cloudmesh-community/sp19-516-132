@@ -35,8 +35,15 @@ BUG install this in non sudo
   git clone https://github.com/cloudmesh/cloudmesh.openapi.git
   git clone https://github.com/cloudmesh-community/cm.git
   ```
+ 
   
-* Step 6 - conda build cloudmesh.common (This will build and upload cloudmesh.common)
+* Step 6 - Login to anaconda org to upload the packages - 
+ 
+  ```
+  anaconda login --username <username> --password <Password>
+  ```
+ 
+* Step 7 - conda build cloudmesh.common (This will build and upload cloudmesh.common)
 
   ```
   cd $SRC/cm/conda
@@ -45,7 +52,7 @@ BUG install this in non sudo
   conda build cloudmesh.sys
   ```
   
-* Install the packages
+* Step 8 - Install the packages
 
   ```
   sudo conda install -y -c laszewski cloudmesh.cmd5
