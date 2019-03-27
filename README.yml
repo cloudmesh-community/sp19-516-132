@@ -5,6 +5,11 @@ owner:
   hid: sp19-516-132
   community: e516
   semester: sp19
+section:
+  - title: cloudmesh conda
+project:
+  - title: TBD
+    url: TBD
 other:
   - activity: Fixing typos in md files
     https://github.com/cloudmesh-community/book/pull/296/commits/e676fb0f9de39f298dc0db4e4cbd6e29c77469b5
