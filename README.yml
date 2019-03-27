@@ -8,8 +8,8 @@ owner:
 section:
   - title: cloudmesh conda
 project:
-  - title: TBD
-    url: TBD
+  - title: cloudmesh.gcloud
+    url: https://github.com/cloudmesh-community/sp19-516-132/tree/master/project-code/cloudmesh.gcloud
 other:
   - activity: Fixing typos in md files
     https://github.com/cloudmesh-community/book/pull/296/commits/e676fb0f9de39f298dc0db4e4cbd6e29c77469b5
