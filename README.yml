@@ -8,12 +8,13 @@ owner:
 section:
   - title: cloudmesh mongo db windows 10
   - url: https://github.com/cloudmesh-community/book/issues/337
-chapter:
-  - title: cloudmesh conda install
-  - url: https://github.com/cloudmesh-community/book/issues/333
   - Pull Requests: https://github.com/cloudmesh-community/cm/pull/113
   - Pull Requests: https://github.com/cloudmesh-community/cm/pull/114
   - Pull Requests: https://github.com/cloudmesh-community/cm/pull/115
+chapter:
+  - title: cloudmesh conda install
+  - url: https://github.com/cloudmesh-community/book/issues/333
+
 project:
   - title: cloudmesh.gcloud
     url: https://github.com/cloudmesh-community/sp19-516-132/tree/master/project-code/cloudmesh.gcloud
