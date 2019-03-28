@@ -8,7 +8,7 @@ import time
 import subprocess
 import sys
 from cloudmesh.common.util import HEADING
-from cloudmesh.compute.libcloud.Provider import Provider
+from cloudmesh.compute.gcloud.Provider import Provider as GCloudProvider
 from cloudmesh.management.configuration.config import Config
 from cloudmesh.common.Printer import Printer
 from cloudmesh.common.FlatDict import FlatDict, flatten
@@ -43,7 +43,7 @@ class TestName:
 
         self.new_name = str(self.name_generator)
 
-        self.p = Provider(name="google")
+        self.p = GCloudProvider(name="google")
 
         self.secgroupname = "CM4TestSecGroup"
         self.secgrouprule = {"ip_protocol": "tcp",
@@ -102,8 +102,8 @@ class TestName:
     def test_04_list_vm(self):
         HEADING()
         vms = self.p.list()
-        # pprint (vms)
-
+        print(vms)
+        print(type(vms))
         print(Printer.flatwrite(vms,
                                 sort_keys=("name"),
                                 order=["name",
@@ -288,4 +288,3 @@ class TestName:
 
         self.test_14_destroy()
         self.test_04_list_vm()
-
