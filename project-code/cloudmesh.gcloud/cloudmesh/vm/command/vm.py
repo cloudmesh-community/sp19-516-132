@@ -15,121 +15,47 @@ from cloudmesh.common.util import banner
 from cloudmesh.terminal.Terminal import VERBOSE
 class VmCommand(PluginCommand):
 
-    # see also https://github.com/cloudmesh/client/edit/master/cloudmesh_client/shell/plugins/VmCommand.py
-
-    # noinspection PyUnusedLocal
     @command
     def do_vm(self, args, arguments):
         """
         ::
 
             Usage:
-                vm ping [NAMES] [--cloud=CLOUDS] [N]
-                vm check [NAMES] [--cloud=CLOUDS]
-                vm status [NAMES] [--cloud=CLOUDS]
-                vm console [NAME] [--force]
-                vm start [NAMES] [--cloud=CLOUD] [--dryrun]
-                vm stop [NAMES] [--cloud=CLOUD] [--dryrun]
-                vm terminate [NAMES] [--cloud=CLOUD] [--dryrun]
-                vm delete [NAMES] [--cloud=CLOUD] [--dryrun]
-                vm refresh [--cloud=CLOUDS]
-                vm list [NAMES]
-                        [--cloud=CLOUDS]
-                        [--format=FORMAT]
-                        [--refresh]
+                vm start [--cloud=CLOUD]
+                         [--name=NAME]
+                vm stop [--cloud=CLOUD]
+                        [--name=NAME]
+                vm delete [--cloud=CLOUD]
+                          [--name=NAME]
+                vm list [--cloud=CLOUDS]
                 vm boot [--name=NAME]
                         [--cloud=CLOUD]
-                        [--username=USERNAME]
                         [--image=IMAGE]
                         [--flavor=FLAVOR]
-                        [--public]
-                        [--secgroup=SECGROUPs]
-                        [--key=KEY]
-                        [--dryrun]
-                vm boot [--n=COUNT]
-                        [--cloud=CLOUD]
-                        [--username=USERNAME]
-                        [--image=IMAGE]
-                        [--flavor=FLAVOR]
-                        [--public]
-                        [--secgroup=SECGROUPS]
-                        [--key=KEY]
-                        [--dryrun]
-                vm run [--name=NAMES] [--username=USERNAME] [--dryrun] COMMAND
-                vm script [--name=NAMES] [--username=USERNAME] [--dryrun] SCRIPT
-                vm ip assign [NAMES]
-                          [--cloud=CLOUD]
-                vm ip show [NAMES]
-                           [--group=GROUP]
-                           [--cloud=CLOUD]
-                           [--format=FORMAT]
-                           [--refresh]
-                vm ip inventory [NAMES]
-                vm ssh [NAMES] [--username=USER]
-                         [--quiet]
-                         [--ip=IP]
-                         [--key=KEY]
-                         [--cloud=CLOUD]
-                         [--command=COMMAND]
-                         [--modify-knownhosts]
-                vm rename [OLDNAMES] [NEWNAMES] [--force] [--dryrun]
-                vm wait [--cloud=CLOUD] [--interval=SECONDS]
+                vm ssh  [--cloud=CLOUD]
+                        [--name=NAME]
+                        [--command=COMMAND]
                 vm info [--cloud=CLOUD]
                         [--format=FORMAT]
-                vm username USERNAME [NAMES] [--cloud=CLOUD]
                 vm resize [NAMES] [--size=SIZE]
+                vm images [--cloud=CLOUD]
+                vm flavors [--cloud=CLOUD]
 
             Arguments:
-                FORMAT         the format
-                COMMAND        positional arguments, the commands you want to
-                               execute on the server(e.g. ls -a) separated by ';',
-                               you will get a return of executing result instead of login to
-                               the server, note that type in -- is suggested before
-                               you input the commands
-                NAME           server name. By default it is set to the name of last vm from database.
                 NAMES          server name. By default it is set to the name of last vm from database.
-                KEYPAIR_NAME   Name of the vm keypair to be used to create VM. Note this is
-                               not a path to key.
-                NEWNAMES       New names of the VM while renaming.
-                OLDNAMES       Old names of the VM while renaming.
+                NAME           server name.
 
             Options:
-                --format=FORMAT   the format [default: table]
-                -H --modify-knownhosts  Do not modify ~/.ssh/known_hosts file
-                                      when ssh'ing into a machine
-                --username=USERNAME   the username to login into the vm. If not
-                                      specified it will be guessed
-                                      from the image name and the cloud
-                --ip=IP          give the public ip of the server
-                --cloud=CLOUD    give a cloud to work on, if not given, selected
-                                 or default cloud will be used
-                --count=COUNT    give the number of servers to start
-                --detail         for table print format, a brief version
-                                 is used as default, use this flag to print
-                                 detailed table
-                --flavor=FLAVOR  give the name or id of the flavor
-                --group=GROUP          give the group name of server
-                --secgroup=SECGROUP    security group name for the server
-                --image=IMAGE    give the name or id of the image
-                --key=KEY        specify a key to use, input a string which
-                                 is the full path to the private key file
-                --keypair_name=KEYPAIR_NAME   Name of the vm keypair to
-                                              be used to create VM.
-                                              Note this is not a path to key.
-                --user=USER      give the user name of the server that you want
-                                 to use to login
-                --name=NAME      give the name of the virtual machine
-                --force          rename/ delete vms without user's confirmation
-                --command=COMMAND
-                                 specify the commands to be executed
+                --ip=IP           give the public ip of the server
+                --cloud=CLOUD     give a cloud to work on, if not given, selected
+                                  or default cloud will be used
+                --flavor=FLAVOR   give the name or id of the flavor
+                --image=IMAGE     give the name or id of the image
+                --command=COMMAND specify the commands to be executed
 
 
             Description:
                 commands used to boot, start or delete servers of a cloud
-
-                vm default [options...]
-                    Displays default parameters that are set for vm boot either
-                    on the default cloud or the specified cloud.
 
                 vm boot [options...]
                     Boots servers on a cloud, user may specify flavor, image
@@ -149,12 +75,6 @@ class VmCommand(PluginCommand):
                     give prefix and/or range to find servers by their names.
                     Or user may specify more options to narrow the search
 
-                vm floating_ip_assign [options...]
-                    assign a public ip to a VM of a cloud
-
-                vm ip show [options...]
-                    show the ips of VMs
-
                 vm ssh [options...]
                     login to a server or execute commands on it
 
@@ -162,7 +82,7 @@ class VmCommand(PluginCommand):
                     same as command "list vm", please refer to it
 
                 vm status [options...]
-                    Retrieves status of last VM booted on cloud and displays it.
+                    Retrieves status of the VM requested
 
                 vm refresh [--cloud=CLOUDS]
                     this command refreshes the data for virtual machines,
@@ -177,9 +97,6 @@ class VmCommand(PluginCommand):
             Quoting commands:
                 cm vm login gvonlasz-004 --command=\"uname -a\"
 
-            Limitations:
-
-                Azure: rename is not supported
         """
 
         def map_parameters(arguments, *args):
@@ -215,361 +132,185 @@ class VmCommand(PluginCommand):
             return clouds, names, commands
 
         def get_clouds(arguments, variables):
-
-            clouds = arguments["cloud"] or arguments["--cloud"] or variables[
-                "cloud"]
+        
+            clouds = arguments["cloud"] or arguments["--cloud"]          
             if "active" == clouds:
                 active = Active()
                 clouds = active.clouds()
             else:
-                clouds = Parameter.expand(clouds)
+                clouds = clouds
 
-            if clouds is None:
+            if (clouds is None) or (clouds == ""):
                 Console.error("you need to specify a cloud")
                 return None
-
             return clouds
 
         def get_names(arguments, variables):
-            names = arguments["NAME"] or arguments["NAMES"] or arguments[
-                "--name"] or variables["vm"]
+            names = arguments["NAME"] or arguments["NAMES"] or arguments["--name"] or variables["vm"]
             if names is None:
                 Console.error("you need to specify a vm")
                 return None
             else:
-                return Parameter.expand(names)
+                return names
+        def get_image(arguments, variables):
+            image = arguments["image"] or arguments["--image"]
+            if image is None:
+                Console.error("you need to specify an image")
+                return None
+            else:
+                return image
 
-        def name_loop(names, label, f):
-            names = get_names(arguments, variables)
-            for name in names:
-                Console.msg("{label} {name}".format(label=label, name=name))
-                # r = f(name)
-
-        def get_commands(arguments, variables):
-            commands = []
-            commands = arguments["command"] or arguments["--command"]
-            if commands is None:
+        def get_command(arguments, variables):
+            command = arguments["command"] or arguments["--command"]
+            if command is None:
                 Console.error("you need to specify a command")
                 return None
             else:
-                return Parameter.expand(commands)
+                return command
 
+        def get_flavor(arguments, variables):
+            flavor = arguments["flavor"] or arguments["--flavor"]
+            if flavor is None:
+                Console.error("you need to specify a flavor")
+                return None
+            else:
+                return flavor
+
+        def get_commands(label, arguments):
+            names = []
+            if "images" == label:
+                clouds = get_clouds(arguments, variables)
+                return clouds
+            if "flavors" == label:
+                clouds = get_clouds(arguments, variables)
+                return clouds
+            if "boot" == label:
+                clouds = get_clouds(arguments, variables)
+                names = get_names(arguments, variables)
+                image = get_image(arguments, variables)
+                flavor = get_flavor(arguments, variables)
+                return clouds, names, image, flavor
+            if "stop" == label:
+                clouds = get_clouds(arguments, variables)
+                names = get_names(arguments, variables)
+                return clouds, names
+            if "start" == label:
+                clouds = get_clouds(arguments, variables)
+                names = get_names(arguments, variables)
+                return clouds, names
+            if "list" == label:
+                clouds = get_clouds(arguments, variables)
+                return clouds
+            if "ssh" == label:
+                clouds = get_clouds(arguments, variables)
+                names = get_names(arguments, variables)
+                command = get_command(arguments, variables)
+                return clouds, names, command
+            if "delete" == label:
+                clouds = get_clouds(arguments, variables)
+                names = get_names(arguments, variables)
+                return clouds, names
 
         map_parameters(arguments,
-                       'active',
                        'cloud',
                        'command',
-                       'dryrun',
                        'flavor',
-                       'force',
                        'format',
-                       'group',
                        'image',
-                       'interval',
                        'ip',
-                       'key',
-                       'modify-knownhosts',
-                       'n',
                        'name',
-                       'public',
-                       'quiet',
-                       'secgroup',
-                       'size',
-                       'username')
+                       'NAME')
 
         VERBOSE.print(arguments, verbose=9)
 
         variables = Variables()
 
-        if arguments.refresh:
-
-            names = []
-
-            clouds, names = get_cloud_and_names("refresh", arguments)
-
-            return ""
-
-        elif arguments.ping:
-
-            names = []
-            pings = int(arguments.N or 3)
-
-            names = []
-
-            clouds, names = get_cloud_and_names("ping", arguments)
-
-            return ""
-
-        elif arguments.check:
-
-            names = []
-
-            clouds, names = get_cloud_and_names("check", arguments)
-
-            return ""
-
-        elif arguments.status:
-
-            names = []
-
-            clouds, names = get_cloud_and_names("status", arguments)
-            print(names)
-            print(clouds)
-
-            return ""
-
-        elif arguments.start:
-
-            names = []
-
-            clouds, names = get_cloud_and_names("start", arguments)
-            p = Provider(clouds[0])
-            p.p.start(name=names)
-
-            return ""
-
-        elif arguments.stop:
-
-            names = []
         
-            clouds, names = get_cloud_and_names("boot", arguments)
-            p = Provider(clouds[0])
-            p.p.stop(name=names)
-
-
-            return ""
-
-        elif arguments.terminate:
-
-            names = []
-
-            clouds, names = get_cloud_and_names("terminate", arguments)
-
-            return ""
-
-        elif arguments.delete:
-
-            clouds, names = get_cloud_and_names("delete", arguments)
-            p = Provider(clouds[0])
-            p.p.destroy(name=names)
-
-            return ""
+        if arguments.images:
+            clouds = get_commands("images", arguments)
+            if clouds is None:
+                return ""
+            else:
+                p = Provider(clouds)
+                images = p.p.images()
+                print(Printer.flatwrite(images,
+                                sort_keys=("name"),
+                                order=["name", "id", "driver"],
+                                header=["Name", "Id", "Driver"])
+                )
+        elif arguments.flavors:
+            clouds = get_commands("flavors", arguments)
+            if clouds is None:
+                return ""
+            else:
+                p = Provider(clouds)
+                flavors = p.p.flavors()
+                print(Printer.flatwrite(flavors,
+                                sort_keys=("name", "disk"),
+                                order=["name", "id", "ram", "disk"],
+                                header=["Name", "Id", "RAM", "Disk"])
+                )
 
         elif arguments.boot:
 
-
-            print("boot the vm")
-            clouds, names = get_cloud_and_names("boot", arguments)
-            p = Provider(clouds[0])
-            p.p.create()
-
-        elif arguments.list:
-            # vm list [NAMES]
-            #   [--cloud = CLOUDS]
-            #   [--format = FORMAT]
-            #   [--refresh]
-
-            # if no clouds find the clouds of all specified vms by name
-            # find all vms of the clouds,
-            # print only thos vms specified by name, if no name is given print all for the cloud
-            # print("list the vms")
-
-            clouds, names = get_cloud_and_names("list", arguments)
-
-            # print("Clouds:", clouds)
-
-            if arguments.NAMES is not None:
-                names = Parameter.expand(arguments.NAMES)
-                Console.error("NAMES, not yet implemented" + str(names))
-
-                try:
-                    if arguments["--refresh"]:
-                        pass
-                        # find all clouds in db
-                        # itterate over the clouds
-                        # for each name in name queue, find it and add it to the cloud vm list
-                        # for each cloud print the vms
-                    else:
-                        pass
-                        # find all clouds in db
-                        # itterate over all clouds
-                        # find the vm with the name
-                        # add it to the cloud list
-                        # for each cloud print the vms
-                except Exception as e:
-
-                    VERBOSE.print(e, verbose=9)
-
+            print("Creating a new vm")
+            clouds, names, image, flavor = get_commands("boot", arguments)
+            if clouds is None or names is None or image is None or flavor is None:
                 return ""
             else:
-                try:
-                    if arguments["--refresh"]:
-                        for cloud in clouds:
-                            Console.ok("refresh " + cloud)
-
-                            p = Provider(cloud)
-                            vms = p.list()
-
-                    for cloud in clouds:
-                        p = Provider(cloud)
-                        kind = p.kind
-                        
-                    
-                        #pprint(p.__dict__)
-                        #pprint(p.p.__dict__) # not pretty
-
-                        collection = "{cloud}-node".format(cloud=cloud,
-                                                           kind=p.kind)
-                        vms = p.p.list()
-
-                        for node in vms:
-                            print(node.name)
-                            print(Printer.flatwrite(node,
+                p = Provider(clouds)
+                node = p.p.create(name=names, size=flavor, image=image)
+                print(Printer.flatwrite(node,
                                 sort_keys=("name"),
-                                order=["name"
-                                       #"node.state",
-                                       #"node.extra.task_state",
-                                       #"node.extra.vm_state",
-                                       #"node.extra.userId",
-                                       #"node.extra.key_name",
-                                       #"node.private_ips",
-                                       #"node.public_ips"
-                                       ],
-                                header=["Name"
-                                       # "State",
-                                       # "Task state",
-                                       # "VM state",
-                                       # "User Id",
-                                       # "SSHKey",
-                                       # "Private ips",
-                                       # "Public ips"
-                                       ]))
-                        
-                        #db = CmDatabase()
-                        #vms = db.find(collection=collection)
+                                order=["name", "state", "public_ips", "private_ips", "size", "image"],
+                                header=["Name", "State", "Public IP", "Private IP", "Size", "Image"])
+                )  
+    
+        elif arguments.start:
+            print("Starting the requested vm")
+            clouds, names = get_commands("start", arguments)
+            if clouds is None or names is None:
+                return ""
+            else:
+                p = Provider(clouds)
+                node = p.p.start(name=names)
 
-                        # pprint(vms)
-                        # print(arguments.format)
-                        # print(p.p.output['vm'])
-
-                        #order = p.p.output['vm']['order']  # not pretty
-                        #header = p.p.output['vm']['header']  # not pretty
-                        
-                        ''' 
-                        print(Printer.flatwrite(vms,
-                                                sort_keys=("name"),
-                                                order=order,
-                                                header=header,
-                                                #output=arguments.format
-                                                )
-                              )
-                        '''      
-                        
-                except Exception as e:
-
-                    VERBOSE.print(e, verbose=9)
+        elif arguments.stop:
+            print("Stopping the requested vm")
+            clouds, names = get_commands("stop", arguments)
+            if clouds is None or names is None:
+                return ""
+            else:
+                p = Provider(clouds)
+                node = p.p.stop(name=names)
 
 
+        elif arguments.delete:
+            print("Delete the specified VM")
+            clouds, names = get_commands("delete", arguments)
+            if clouds is None or names is None:
+                return ""
+            else:
+                p = Provider(clouds)
+                p.p.destroy(name=names)
 
             return ""
 
-        elif arguments.info:
+        elif arguments.list:
+            print("list the vms in the cloud")
 
-            """
-            vm info [--cloud=CLOUD] [--format=FORMAT]
-            """
-            print("info for the vm")
+            clouds = get_commands("list", arguments)
+            if clouds is None:
+                return ""
+            else:
+                p = Provider(clouds)
+                vms = p.p.list()
+                print(Printer.flatwrite(vms,
+                                sort_keys=("name"),
+                                order=["name", "state", "public_ips", "private_ips", "size", "image"],
+                                header=["Name", "State", "Public IP", "Private IP", "Size", "Image"])
+                )
 
-
-            cloud, names = get_cloud_and_names("info", arguments)
-
-
-
-        elif arguments.rename:
-
-            print("rename the vm")
-            
-            try:
-                oldnames = Parameter.expand(arguments["OLDNAMES"])
-                newnames = Parameter.expand(arguments["NEWNAMES"])
-                force = arguments["--force"]
-
-                if oldnames is None or newnames is None:
-                    Console.error("Wrong VMs specified for rename",
-                                  traceflag=False)
-                elif len(oldnames) != len(newnames):
-                    Console.error("The number of VMs to be renamed is wrong",
-                                  traceflag=False)
-                else:
-                    for i in range(0, len(oldnames)):
-                        oldname = oldnames[i]
-                        newname = newnames[i]
-                        if arguments["--dryrun"]:
-                            Console.ok(
-                                "Rename {} to {}".format(oldname, newname))
-                        else:
-                            print("rename")
-                            #
-                            # Vm.rename(cloud=cloud,
-                            #          oldname=oldname,
-                            #          newname=newname,
-                            #          force=force
-                            #          )
-                    msg = "info. OK."
-                    Console.ok(msg)
-            except Exception as e:
-                # Error.traceback(e)
-                Console.error("Problem deleting instances", traceflag=False)
-
-        elif arguments["ip"] and arguments["show"]:
-
-            print("show the ips")
-            """
-            vm ip show [NAMES]
-                   [--group=GROUP]
-                   [--cloud=CLOUD]
-                   [--format=FORMAT]
-                   [--refresh]
-
-            """
-
-        elif arguments["ip"] and arguments["assign"]:
-            """
-            vm ip assign [NAMES] [--cloud=CLOUD]
-            """
-            print("assign the public ip")
-
-        elif arguments["ip"] and arguments["inventory"]:
-
-            """
-            vm ip inventory [NAMES]
-
-            """
-            print("list ips that could be assigned")
-
-        elif arguments.username:
-
-            """
-            vm username USERNAME [NAMES] [--cloud=CLOUD]
-            """
-            print("sets the username for the vm")
-
-        elif arguments.default:
-
-            print("sets defaults for the vm")
-
-        elif arguments.run:
-            """
-            vm run [--name=NAMES] [--username=USERNAME] [--dryrun] COMMAND
-
-            """
-            pass
-        elif arguments.script:
-
-            """
-            vm script [--name=NAMES] [--username=USERNAME] [--dryrun] SCRIPT
-            """
-            pass
 
         elif arguments.resize:
             """
@@ -579,39 +320,11 @@ class VmCommand(PluginCommand):
 
         elif arguments.ssh:
 
-            """
-            vm ssh [NAMES] [--username=USER]
-                 [--quiet]
-                 [--ip=IP]
-                 [--key=KEY]
-                 [--command=COMMAND]
-                 [--modify-knownhosts]
-            """
-            print("ssh  the vm")
+            print("ssh  into the vm and execute command")
 
-            #names = get_names(arguments, variables)
-            clouds, names, commands = get_cloud_and_names_commands("ssh", arguments)
-            #print(clouds)
-            #print(names)
-            #command = get_command("ssh",arguments)
-            p = Provider(clouds[0])
-            command = commands[0]
-            p.p.ssh(name=names, command=command)
-
-        elif arguments.console:
-            # vm console [NAME] [--force]
-
-            names = get_names(arguments, variables)
-
-            for name in names:
-                # r = vm.console(name,force=argument.force)
-                Console.msg("{label} {name}".format(label="console", name=name))
-            return
-
-
-
-        elif arguments.wait:
-            """
-            vm wait [--cloud=CLOUD] [--interval=SECONDS]
-            """
-            print("waits for the vm till its ready and one can login")
+            clouds, names, command = get_commands("ssh", arguments)
+            if clouds is None or names is None or command is None:
+                return ""
+            else:
+                p = Provider(clouds)
+                p.p.ssh(name=names, command=command)
