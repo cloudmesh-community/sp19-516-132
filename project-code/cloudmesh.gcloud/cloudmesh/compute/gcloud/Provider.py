@@ -127,146 +127,6 @@ class Provider(ComputeNodeABC):
                 return element
         return None
 
-    def keys(self, raw=False):
-        """
-        Lists the keys on the cloud
-        :param raw: If raw is set to True the lib cloud object is returened
-                    otherwise a dict is returened.
-        :return: dict or libcloud object
-        """
-        if self.cloudman:
-            entries = self.cloudman.list_key_pairs()
-            if raw:
-                return entries
-            else:
-                return self.dict(entries, kind="key")
-        return None
-
-    def key_upload(self, key):
-        """
-        uploades teh key specified in the yaml configuration to the cloud
-        :param key:
-        :return:
-        """
-
-        print(key)
-        keys = self.keys()
-        for cloudkey in keys:
-            if cloudkey['fingerprint'] == key["fingerprint"]:
-                return
-
-        filename = Path(key["path"])
-        key = self.cloudman.import_key_pair_from_file(
-            "{user}".format(**self.user), filename)
-
-    def list_secgroups(self, raw=False):
-        if self.cloudman:
-            secgroups = self.cloudman.ex_list_security_groups()
-            if not raw:
-                secgroups = self.dict(secgroups, kind="secgroup")
-            return secgroups
-        return None
-
-    def list_secgroup_rules(self, secgroup='default', raw=False):
-        if self.cloudman:
-            secgroups = self.list_secgroups(raw=raw)
-            thegroup = None
-            if raw:
-                # Theoretically it's possible to have secgroups with the same name,
-                # in this case, we list rules for the first one only.
-                # In reality this don't seem like a good practice so we assume
-                # this situation MOST LIKELY does not occur.
-                for _secgroup in secgroups:
-                    if _secgroup.name == secgroup:
-                        thegroup = _secgroup
-                        break
-            else:
-                # this already returns only one entry
-                thegroup = self.find(secgroups, name=secgroup)
-
-            rules = []
-            if raw:
-                # dealing with object
-                for rule in thegroup.rules:
-                    rules.append(rule)
-            else:
-                # dealing with dict
-                for rule in thegroup["rules"]:
-                    # self.p.dict() converted the object into a list of dict,
-                    # even if there is only one object
-                    rule = self.dict(rule)[0]
-                    rules.append(rule)
-            return rules
-        return None
-
-    def add_secgroup(self, secgroupname, description=""):
-        if self.cloudman:
-            return self.cloudman.ex_create_security_group(secgroupname,
-                                                          description=description)
-        return None
-
-    def remove_secgroup(self, secgroupname):
-        if self.cloudman:
-            secgroups = self.list_secgroups(raw=True)
-            thegroups = []
-            for secgroup in secgroups:
-                if secgroup.name == secgroupname:
-                    thegroups.append(secgroup)
-            # pprint (secgroups)
-            # pprint (thegroups)
-            if thegroups:
-                for thegroup in thegroups:
-                    self.cloudman.ex_delete_security_group(thegroup)
-            else:
-                return False
-        return False
-
-    def add_rules_to_secgroup(self, secgroupname, newrules):
-        oldrules = self.list_secgroup_rules(secgroupname)
-        pprint(oldrules)
-        pprint(newrules)
-        if self.cloudman:
-            secgroups = self.list_secgroups(raw=True)
-            for secgroup in secgroups:
-                # for multiple secgroups with the same name,
-                # add the rules to all the groups
-                if secgroup.name == secgroupname:
-                    # supporting multiple rules at once
-                    for rule in newrules:
-                        self.cloudman.ex_create_security_group_rule(secgroup,
-                                                                    rule[
-                                                                        "ip_protocol"],
-                                                                    rule[
-                                                                        "from_port"],
-                                                                    rule[
-                                                                        "to_port"],
-                                                                    cidr=rule[
-                                                                        "ip_range"]
-                                                                    )
-
-    def remove_rules_from_secgroup(self, secgroupname, rules):
-        oldrules = self.list_secgroup_rules(secgroupname)
-        pprint(oldrules)
-        pprint(rules)
-        if self.cloudman:
-            secgroups = self.list_secgroups(raw=True)
-            for secgroup in secgroups:
-                # for multiple secgroups with the same name,
-                # remove the rules from all the groups
-                if secgroup.name == secgroupname:
-                    # supporting multiple rules at once
-                    # get all rules, in obj format
-                    rulesobj = self.list_secgroup_rules(secgroup=secgroupname,
-                                                        raw=True)
-                    for rule in rules:
-                        for ruleobj in rulesobj:
-                            if (ruleobj.ip_protocol == rule["ip_protocol"] and
-                                    ruleobj.from_port == rule["from_port"] and
-                                    ruleobj.to_port == rule["to_port"] and
-                                    ruleobj.ip_range == rule["ip_range"]):
-                                self.cloudman.ex_delete_security_group_rule(
-                                    ruleobj)
-
     def images(self, raw=False):
         """
         Lists the images on the cloud
@@ -322,7 +182,6 @@ class Provider(ComputeNodeABC):
         :return:  The dict representing the node
         """
         HEADING(c=".")
-        #names = Parameter.expand(name)
         names=name
         nodes = self.list(raw=True)
         for node in nodes:
@@ -339,15 +198,10 @@ class Provider(ComputeNodeABC):
         :return: The dict representing the node including updated status
         """
         HEADING(c=".")
-        #names = Parameter.expand(name)
         names=name
-        print(names)
         nodes = self.list(raw=True)
-        print(nodes)
         for node in nodes:
-            print(node)
-            if node.name in names:
-                print(node.name)
+            if node.name == names:
                 self.cloudman.ex_stop_node(node)
 
         return None
@@ -361,15 +215,6 @@ class Provider(ComputeNodeABC):
         """
         return self.find(self.list(), name=name)
 
-    def suspend(self, name=None):
-        """
-        suspends the node with the given name. NOT YET IMPLEMENTED.
-    
-        :param name: the name of the node
-        :return: The dict representing the node
-        """
-        HEADING(c=".")
-        return None
 
     def list(self, raw=False):
         """
@@ -380,17 +225,10 @@ class Provider(ComputeNodeABC):
         """
         entries = self.cloudman.list_nodes()
 
-        return entries
-
-    def resume(self, name=None):
-        """
-        resume the named node. NOT YET IMPLEMENTED.
-    
-        :param name: the name of the node
-        :return: the dict of the node
-        """
-        HEADING(c=".")
-        return None
+        if raw:
+            return entries
+        else:
+            return self.dict(entries,kind="vm")
 
     def destroy(self, name=None):
         """
@@ -408,14 +246,6 @@ class Provider(ComputeNodeABC):
         # bug status shoudl change to destroyed
         return None
 
-    def reboot(self, name=None):
-        """
-        Reboot the node. NOT YET IMPLEMENTED.
-        :param name: the name of the node
-        :return: the dict of the node
-        """
-        HEADING(c=".")
-        return None
 
     def create(self, name=None, image=None, size=None, location=None,  timeout=360, **kwargs):
         """
@@ -429,8 +259,8 @@ class Provider(ComputeNodeABC):
         :param kwargs: additional arguments HEADING(c=".")ed along at time of boot
         :return:
         """
-        self.image = self.spec["default"]["image"]
-        self.flavor = self.spec["default"]["size"]
+        #self.image = self.spec["default"]["image"]
+        #self.flavor = self.spec["default"]["size"]
         location = self.spec["credentials"]["datacenter"]
 
         images = self.images(raw=True)
@@ -439,59 +269,33 @@ class Provider(ComputeNodeABC):
         flavor_use = None
         
         for _image in images:
-            if _image.name == self.image:
+            if _image.name == image:
                 image_use = _image
                 break
         for _flavor in flavors:
-            if _flavor.name == self.flavor:
+            if _flavor.name == size:
                 flavor_use = _flavor
                 break
-        # keyname = Config()["cloudmesh"]["profile"]["user"]
-        # ex_keyname has to be the registered keypair name in cloud
-        '''
-        if self.cloudtype == "openstack":
-            if "ex_security_groups" in kwargs:
-                secgroupsobj = []
-                #
-                # this gives existing secgroups in obj form
-                secgroups = self.list_secgroups(raw=True)
-                for secgroup in kwargs["ex_security_groups"]:
-                    for _secgroup in secgroups:
-                        if _secgroup.name == secgroup:
-                            secgroupsobj.append(_secgroup)
-                # now secgroup name is converted to object which
-                # is required by the libcloud api call
-                kwargs["ex_security_groups"] = secgroupsobj
-            node = self.cloudman.create_node(name=name, image=image_use,
-                                             size=flavor_use, **kwargs)
-        '''
-        name=self.name
+
         metadata = {"items": [{"value": self.user+":"+self.key_val, "key": "ssh-keys"}]}
         node = self.cloudman.create_node(name=name, image=image_use,
                 size=flavor_use, location=location,ex_metadata=metadata, **kwargs)
      
         return self.dict(node)
+
     def ssh(self, name=None, command=None):
-        name = name[0]
-        print(name)
         nodes = self.list(raw=True)
-        print(nodes)
         for node in nodes:
             if node.name == name:
                 self.testnode = node
-                print(self.testnode)
                 break
-        print(self.testnode)
         pubip = self.testnode.public_ips[0]
-        print(pubip)
         ssh = subprocess.Popen(
             ["ssh", "%s" % (pubip), "%s" % (command)],
-            #["ssh", "104.198.69.154", "cat", "/etc/*release*"],
             shell=False,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         result = ssh.stdout.readlines()
-        print(result)
         if result == []:
             error = ssh.stderr.readlines()
             print("ERROR: %s" % error)
@@ -501,39 +305,30 @@ class Provider(ComputeNodeABC):
                 line = line.decode("utf-8")
                 print(line.strip("\n"))
 
-
-    def get_publicIP(self):
-        # pools = self.cloudman.ex_list_floating_ip_pools()
-        # ex_get_floating_ip(ip)
-        # ex_create_floating_ip(ip_pool=pools[0])
-        #
+    def resume(self, name=None):
         """
-                    ex_attach_floating_ip_to_node(node, ip)
-                    ex_detach_floating_ip_from_node(node, ip)
-                    ex_delete_floating_ip(ip)
+        resume the named node. NOT YET IMPLEMENTED.
+    
+        :param name: the name of the node
+        :return: the dict of the node
         """
-        ip = None
-        if self.cloudtype == "openstack":
-            ips = self.cloudman.ex_list_floating_ips()
-            if ips:
-                ip = ips[0]
-            else:
-                pools = self.cloudman.ex_list_floating_ip_pools()
-                # ex_get_floating_ip(ip)
-                ip = self.cloudman.ex_create_floating_ip(ip_pool=pools[0])
-        return ip
+        HEADING(c=".")
+        return None
 
-    def attach_publicIP(self, node, ip):
-        return self.cloudman.ex_attach_floating_ip_to_node(node, ip)
+    def suspend(self, name=None):
+        """
+        suspends the node with the given name. NOT YET IMPLEMENTED.
 
-    def detach_publicIP(self, node, ip):
-        self.cloudman.ex_detach_floating_ip_from_node(node, ip)
-        return self.cloudman.ex_delete_floating_ip(ip)
+        :param name: the name of the node
+        :return: The dict representing the node
+        """
+        HEADING(c=".")
+        return None
 
     def rename(self, name=None, destination=None):
         """
         rename a node. NOT YET IMPLEMENTED.
-    
+
         :param destination:
         :param name: the current name
         :return: the dict with the new name
