@@ -12,8 +12,8 @@ section:
   - Pull Requests: https://github.com/cloudmesh-community/cm/pull/114
   - Pull Requests: https://github.com/cloudmesh-community/cm/pull/115
 chapter:
-  - title: cloudmesh conda install
-  - url: https://github.com/cloudmesh-community/book/issues/333
+  - title: Condo Installation
+    url: https://github.com/cloudmesh/cloudmesh-conda
 
 project:
   - title: cloudmesh.gcloud
