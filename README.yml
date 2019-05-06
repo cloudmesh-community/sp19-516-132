@@ -7,10 +7,12 @@ owner:
   semester: sp19
 section:
   - title: cloudmesh mongo db windows 10
-  - url: https://github.com/cloudmesh-community/book/issues/337
+    code: https://github.com/cloudmesh/cloudmesh-cloud/blob/master/cloudmesh/mongo/MongoDBController.py
+  - url: https://github.com/cloudmesh/cloudmesh-manual/blob/master/docs-source/source/mongo.md
 chapter:
   - title: Condo Installation
-    url: https://github.com/cloudmesh/cloudmesh-conda/blob/master/README.md
+    code: https://github.com/cloudmesh/cloudmesh-conda
+    url: https://github.com/cloudmesh/cloudmesh-conda/blob/master/README.md    
 project:
   - title: cloudmesh.gcloud
     code: https://github.com/cloudmesh-community/sp19-516-132/tree/master/project-code/cloudmesh.gcloud
