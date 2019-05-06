@@ -16,7 +16,7 @@ chapter:
 project:
   - title: cloudmesh.gcloud
     code: https://github.com/cloudmesh-community/sp19-516-132/tree/master/project-code/cloudmesh.gcloud
-    url: https://github.com/cloudmesh/cloudmesh-cloud/blob/master/README.md
+    url: https://github.com/cloudmesh/cloudmesh-manual/blob/master/docs-source/source/accounts/google-ufo.md
     pytest: https://github.com/cloudmesh-community/sp19-516-132/blob/master/project-code/cloudmesh.gcloud/tests/test_compute_google.py
 other:
   - title: Fixing typos in md files
