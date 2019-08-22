@@ -19,7 +19,7 @@ class Provider(ComputeNodeABC):
         "google": LibcloudProvider.GCE
     }
 
-    def __init__(self, name=None, configuration="~/.cloudmesh/cloudmesh4.yaml"):
+    def __init__(self, name=None, configuration="~/.cloudmesh/cloudmesh.yaml"):
         """
         Initializes the provider. The default parameters are read from the configutation
         file that is defined in yaml format.

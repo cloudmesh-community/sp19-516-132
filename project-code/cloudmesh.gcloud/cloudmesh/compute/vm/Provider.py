@@ -9,7 +9,7 @@ from cloudmesh.terminal.Terminal import VERBOSE
 class Provider(object):
 
     def __init__(self, name=None,
-                 configuration="~/.cloudmesh/.cloudmesh4.yaml"):
+                 configuration="~/.cloudmesh/.cloudmesh.yaml"):
         self.kind = Config(configuration)["cloudmesh"]["cloud"][name]["cm"][
             "kind"]
         self.name = name

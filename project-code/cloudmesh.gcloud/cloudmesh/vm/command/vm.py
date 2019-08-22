@@ -2,7 +2,7 @@ from __future__ import print_function
 
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
-from cloudmesh.shell.variables import Variables
+from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
 from pprint import pprint, pformat
 from cloudmesh.common.parameter import Parameter
@@ -152,6 +152,7 @@ class VmCommand(PluginCommand):
                 return None
             else:
                 return names
+
         def get_image(arguments, variables):
             image = arguments["image"] or arguments["--image"]
             if image is None:
@@ -178,38 +179,27 @@ class VmCommand(PluginCommand):
 
         def get_commands(label, arguments):
             names = []
-            if "images" == label:
+            if label in ["delete", "stop", "start"]:
+                clouds = get_clouds(arguments, variables)
+                names = get_names(arguments, variables)
+                return clouds, names
+
+            elif label in ["list", "flavors", "images"]:
                 clouds = get_clouds(arguments, variables)
                 return clouds
-            if "flavors" == label:
-                clouds = get_clouds(arguments, variables)
-                return clouds
-            if "boot" == label:
+
+            elif "boot" == label:
                 clouds = get_clouds(arguments, variables)
                 names = get_names(arguments, variables)
                 image = get_image(arguments, variables)
                 flavor = get_flavor(arguments, variables)
                 return clouds, names, image, flavor
-            if "stop" == label:
-                clouds = get_clouds(arguments, variables)
-                names = get_names(arguments, variables)
-                return clouds, names
-            if "start" == label:
-                clouds = get_clouds(arguments, variables)
-                names = get_names(arguments, variables)
-                return clouds, names
-            if "list" == label:
-                clouds = get_clouds(arguments, variables)
-                return clouds
-            if "ssh" == label:
+
+            elif "ssh" == label:
                 clouds = get_clouds(arguments, variables)
                 names = get_names(arguments, variables)
                 command = get_command(arguments, variables)
                 return clouds, names, command
-            if "delete" == label:
-                clouds = get_clouds(arguments, variables)
-                names = get_names(arguments, variables)
-                return clouds, names
 
         map_parameters(arguments,
                        'cloud',
